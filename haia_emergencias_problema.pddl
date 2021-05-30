@@ -30,6 +30,17 @@
           (atrapado V1 E3)
           (en V2 E5)
           (atrapado V2 E5)
+          
+          (incendio E1)
+          (incendio E2)
+          (incendio E6)
+          
+          (bloqueado E3 E4)
+          (bloqueado E4 E3)
+          (bloqueado E1 Hospital)
+          (bloqueado Hospital E1)
+          
+          ;; Faltan los predicados carretera ;;
 )
 
 )
