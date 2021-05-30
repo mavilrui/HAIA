@@ -1,4 +1,4 @@
-(define (domain AEROPUERTO)
+(define (domain EMERGENCIAS)
   (:requirements :strips :typing :durative-actions :fluents
   )
   (:types loc
@@ -27,7 +27,7 @@
            :parameters (?m - mov ?l1 - loc ?l2 - loc)
            :duration (= ?duration (/ (distancia ?l1 ?l2) (velocidad ?m)) )
            :condition (and (at start (at ?m ?l1)) 
-                      (over all (connect ?l1 ?l2)) 
+                      (over all (carretera ?l1 ?l2)) 
                       (over all (not (bloqueado ?l1 ?l2))))
            :effect (and (at start (not (at ?m ?l1) )) (at end (at ?m ?l2)))
   )
@@ -52,16 +52,18 @@
             :parameters (?a - amb ?v - vic ?e - edi)
             :duration (= ?duration 10)
             :condition (and (over all (en ?a ?e)) 
+                       (over all (not (ocupada ?a)))
                        (at start (en ?v ?e)))
-            :effect (and (at end (not (en ?v ?e))) (at end (cargado ?v ?a)))
+            :effect (and (at end (not (en ?v ?e))) (at end (cargado ?v ?a)) (at end (ocupada ?a)))
   )
   
   (:durative-action descargar
             :parameters (?a - amb ?v - vic ?h - hos)
             :duration (= ?duration 10)
             :condition (and (over all (en ?a ?h)) 
+                       (at start (ocupada ?a)) 
                        (at start (cargado ?v ?a)))
-            :effect (and (at end (en ?v ?h)) (at end (not (cargado ?v ?a))))
+            :effect (and (at end (en ?v ?h)) (at end (not (cargado ?v ?a))) (at end (not (ocupada ?a))))
   )
   
   (:durative-action desbloquear
