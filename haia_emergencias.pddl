@@ -37,11 +37,19 @@
   (:durative-action recargar
             :parameters (?b - bom ?e - est)
             :duration (= ?duration (/ (- (capacidad-agua) (agua ?b)) 10) )
-            :condition (and (at start (< (agua ?b) (/ (capacidad-agua) 2))) (over all (at ?b ?e)))
+            :condition (and (at start (< (agua ?b)
+                       (/ (capacidad-agua) 2))) 
+                       (over all (at ?b ?e)))
             :effect (and (at end (assign (agua ?b) (capacidad-agua))))
   )
   
   (:durative-action rescatar
+            :parameters (?a -amb ?v - vic ?e - edi)
+            :duration (= ?duration 10)
+            :condition (and (over all (en ?a ?e)) 
+                       (over all (en ?v ?e)) 
+                       (at start (atrapado ?v ?e)))
+            :effect (at end (not (atrapado ?v ?e))
   )
   
   (:durative-action cargar
