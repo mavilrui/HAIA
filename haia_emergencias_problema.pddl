@@ -50,4 +50,6 @@
           (not (bloqueado ? ?))
 )
 
+(:metric minimize (timesteps))
+
 )
