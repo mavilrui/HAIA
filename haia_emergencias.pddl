@@ -53,9 +53,19 @@
   )
   
   (:durative-action cargar
+            :parameters (?a -amb ?v - vic ?e - edi)
+            :duration (= ?duration 10)
+            :condition (and (over all (en ?a ?e)) 
+                       (at start (en ?v ?e)))
+            :effect (and (at end (not (en ?v ?e))) (at end (cargado ?v ?a)))
   )
   
   (:durative-action descargar
+            :parameters (?a -amb ?v - vic ?h - hos)
+            :duration (= ?duration 10)
+            :condition (and (over all (en ?a ?h)) 
+                       (at start (cargado ?v ?a)))
+            :effect (and (at end (en ?v ?h)) (at end (not (cargado ?v ?a))))
   )
   
   (:durative-action desbloquear
