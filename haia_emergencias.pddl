@@ -69,6 +69,12 @@
   )
   
   (:durative-action desbloquear
+            :parameters (?p -pol ?e1 - edi ?e2 - edi)
+            :duration (= ?duration 10)
+            :condition (and (or (over all (en ?p ?e1)) (over all (en ?p ?e2))) 
+                       (at start (bloqueado ?e2 ?e1))
+                       (at start (bloqueado ?e1 ?e2)))
+            :effect (at end (not (bloqueado ?e1 ?e2) (not (bloqueado ?e2 ?e1)))
   )
   
   (:durative-action extinguir
