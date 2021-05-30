@@ -18,10 +18,9 @@
 
   (:functions (velocidad ?m - mov)
               (distancia ?l1 - loc ?l2 - loc)
-              (capacidadAmb)
+              (coste-apagado)
               (agua ?b - bom)
               (capacidad-agua)
-              (agua-total)
    )
   
   (:durative-action mover
@@ -29,22 +28,19 @@
            :duration (= ?duration (/ (distancia ?l1 ?l2) (velocidad ?m)) )
            :condition (and (at start (at ?m ?l1)) 
                       (over all (connect ?l1 ?l2)) 
-                      (over all (not (bloqueado ?l1 ?l2))) 
-                      (at start (> (fuel ?m) (* (consumo ?m) (distancia ?l1 ?l2)))))
+                      (over all (not (bloqueado ?l1 ?l2))))
            :effect (and (at start (not (at ?m ?l1) )) (at end (at ?m ?l2)))
   )
 
   (:durative-action recargar
             :parameters (?b - bom ?e - est)
             :duration (= ?duration (/ (- (capacidad-agua) (agua ?b)) 10) )
-            :condition (and (at start (< (agua ?b)
-                       (/ (capacidad-agua) 2))) 
-                       (over all (at ?b ?e)))
+            :condition (over all (at ?b ?e))
             :effect (and (at end (assign (agua ?b) (capacidad-agua))))
   )
   
   (:durative-action rescatar
-            :parameters (?a -amb ?v - vic ?e - edi)
+            :parameters (?a - amb ?v - vic ?e - edi)
             :duration (= ?duration 10)
             :condition (and (over all (en ?a ?e)) 
                        (over all (en ?v ?e)) 
@@ -53,7 +49,7 @@
   )
   
   (:durative-action cargar
-            :parameters (?a -amb ?v - vic ?e - edi)
+            :parameters (?a - amb ?v - vic ?e - edi)
             :duration (= ?duration 10)
             :condition (and (over all (en ?a ?e)) 
                        (at start (en ?v ?e)))
@@ -61,7 +57,7 @@
   )
   
   (:durative-action descargar
-            :parameters (?a -amb ?v - vic ?h - hos)
+            :parameters (?a - amb ?v - vic ?h - hos)
             :duration (= ?duration 10)
             :condition (and (over all (en ?a ?h)) 
                        (at start (cargado ?v ?a)))
@@ -69,7 +65,7 @@
   )
   
   (:durative-action desbloquear
-            :parameters (?p -pol ?e1 - edi ?e2 - edi)
+            :parameters (?p - pol ?e1 - edi ?e2 - edi)
             :duration (= ?duration 10)
             :condition (and (or (over all (en ?p ?e1)) (over all (en ?p ?e2))) 
                        (at start (bloqueado ?e2 ?e1))
@@ -78,6 +74,12 @@
   )
   
   (:durative-action extinguir
+            :parameters (?b - bpm ?e - edi)
+            :duration (= ?duration 10)
+            :condition (and (over all (en ?b ?e))
+                       (at start (incendio ?e))
+                       (at start (> (agua ?b) (coste-apagado))))
+            :effect (and (at end (not (incendio ?e))) (at end (decrease (agua ?b) (coste-apagado))))
   )
   
 )
