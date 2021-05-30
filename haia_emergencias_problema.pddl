@@ -43,4 +43,11 @@
           ;; Faltan los predicados carretera ;;
 )
 
+(:goal
+          (en V1 Hospital)
+          (en V2 Hospital)
+          (not (incendio ?))
+          (not (bloqueado ? ?))
+)
+
 )
