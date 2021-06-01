@@ -1,6 +1,7 @@
 (define (domain EMERGENCIAS)
-  (:requirements :strips :typing :durative-actions :fluents
-  )
+
+  (:requirements :strips :typing :durative-actions :fluents)
+
   (:types loc
           edi hos est - loc
           mov
@@ -27,16 +28,16 @@
   (:durative-action mover
            :parameters (?m - mov ?l1 - loc ?l2 - loc)
            :duration (= ?duration (/ (distancia ?l1 ?l2) (velocidad ?m)) )
-           :condition (and (at start (at ?m ?l1)) 
+           :condition (and (at start (en ?m ?l1)) 
                       (over all (carretera ?l1 ?l2)) 
                       (over all (not (bloqueado ?l1 ?l2))))
-           :effect (and (at start (not (at ?m ?l1) )) (at end (at ?m ?l2)))
+           :effect (and (at start (not (en ?m ?l1) )) (at end (en ?m ?l2)))
   )
 
   (:durative-action recargar
             :parameters (?b - bom ?e - est)
             :duration (= ?duration (/ (- (capacidad-agua) (agua ?b)) 10) )
-            :condition (over all (at ?b ?e))
+            :condition (over all (en ?b ?e))
             :effect (and (at end (assign (agua ?b) (capacidad-agua))))
   )
   
@@ -46,7 +47,7 @@
             :condition (and (over all (en ?a ?e)) 
                        (over all (en ?v ?e)) 
                        (at start (atrapado ?v ?e)))
-            :effect (at end (not (atrapado ?v ?e))
+            :effect (at end (not (atrapado ?v ?e)))
   )
   
   (:durative-action cargar
@@ -70,19 +71,18 @@
   (:durative-action desbloquear
             :parameters (?p - pol ?e1 - edi ?e2 - edi)
             :duration (= ?duration 10)
-            :condition (and (or (over all (en ?p ?e1)) (over all (en ?p ?e2))) 
+            :condition (and (over all (or (en ?p ?e1) (en ?p ?e2)))
                        (at start (bloqueado ?e2 ?e1))
                        (at start (bloqueado ?e1 ?e2)))
-            :effect (at end (not (bloqueado ?e1 ?e2) (not (bloqueado ?e2 ?e1)))
+            :effect (and (at end (not (bloqueado ?e1 ?e2))) (at end (not (bloqueado ?e2 ?e1))))
   )
   
   (:durative-action extinguir
-            :parameters (?b - bpm ?e - edi)
+            :parameters (?b - bom ?e - edi)
             :duration (= ?duration 10)
             :condition (and (over all (en ?b ?e))
                        (at start (incendio ?e))
                        (at start (> (agua ?b) (coste-apagado))))
             :effect (and (at end (not (incendio ?e))) (at end (decrease (agua ?b) (coste-apagado))))
   )
-  
 )

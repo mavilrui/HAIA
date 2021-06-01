@@ -82,10 +82,17 @@
 )
 
 (:goal
+	( and
           (en V1 Hospital)
           (en V2 Hospital)
-          (not (incendio ?))
-          (not (bloqueado ? ?))
+          (not (incendio E1))
+          (not (incendio E2))
+          (not (incendio E6))
+          (not (bloqueado E3 E4))
+          (not (bloqueado E4 E3))
+          (not (bloqueado E1 Hospital))
+          (not (bloqueado Hospital E1))
+	)
 )
 
 (:metric minimize (total-time))
