@@ -88,6 +88,6 @@
           (not (bloqueado ? ?))
 )
 
-(:metric minimize (timesteps))
+(:metric minimize (total-time))
 
 )
