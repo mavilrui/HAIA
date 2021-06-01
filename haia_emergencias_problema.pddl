@@ -20,7 +20,26 @@
           (= (coste-apagado) 25)
           (= (agua B) 50)
           
-          ;; Faltan las funciones distancia ;;
+          (distancia E1 E2)
+          (distancia E2 E1)
+          (distancia E2 E3)
+          (distancia E3 E2)
+          (distancia E3 E4)
+          (distancia E4 E3)
+          (distancia E4 E5)
+          (distancia E5 E4)
+          (carretera E5 E6)
+          (distancia E6 E5)
+          (distancia E6 E1)
+          (distancia E1 E6)
+          
+          (distancia Hospital E1)
+          (distancia E1 Hospital)
+          (distancia Hospital E4)
+          (distancia E4 Hospital)
+          
+          (distancia EstacionBomberos E4)
+          (distancia E4 EstacionBomberos)
           
           ;; PREDICADOS ;;
           (en B EstacionBomberos)
