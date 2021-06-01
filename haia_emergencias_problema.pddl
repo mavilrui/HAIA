@@ -40,7 +40,26 @@
           (bloqueado E1 Hospital)
           (bloqueado Hospital E1)
           
-          ;; Faltan los predicados carretera ;;
+          (carretera E1 E2)
+          (carretera E2 E1)
+          (carretera E2 E3)
+          (carretera E3 E2)
+          (carretera E3 E4)
+          (carretera E4 E3)
+          (carretera E4 E5)
+          (carretera E5 E4)
+          (carretera E5 E6)
+          (carretera E6 E5)
+          (carretera E6 E1)
+          (carretera E1 E6)
+          
+          (carretera Hospital E1)
+          (carretera E1 Hospital)
+          (carretera Hospital E4)
+          (carretera E4 Hospital)
+          
+          (carretera EstacionBomberos E4)
+          (carretera E4 EstacionBomberos)
 )
 
 (:goal
