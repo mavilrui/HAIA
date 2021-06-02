@@ -27,6 +27,9 @@
           (= (capacidad-agua) 50)
           (= (coste-apagado) 25)
           (= (agua B) 50)
+	  
+          (= (capacidadMax) 2)
+          (= (carga-amb A) 0)
           
           (= (distancia E1 E2) 25)(= (distancia E2 E1) 25)
           (= (distancia E2 E3) 45)(= (distancia E3 E2) 45)
@@ -39,9 +42,6 @@
           (= (distancia Hospital E4) 30)(= (distancia E4 Hospital) 30)
           
           (= (distancia EstacionBomberos E4) 20)(= (distancia E4 EstacionBomberos) 20)
-	  
-          (= (capacidadMax) 2)
-          (= (carga-amb A) 0)
           
           (= (incendio E1) 1)
           (= (incendio E2) 2)
@@ -59,7 +59,7 @@
           (en B EstacionBomberos)
           (en P EstacionBomberos)
           (repostar B EstacionBomberos)
-	        (repostar P EstacionBomberos)
+	  (repostar P EstacionBomberos)
           (en A Hospital)(disponible A)
           (repostar A Hospital)
 
@@ -76,7 +76,9 @@
           (libre E6 E1)(libre E1 E6)
           (libre Hospital E4)(libre E4 Hospital)
           (libre EstacionBomberos E4)(libre E4 EstacionBomberos)
-
+          
+          (bloqueado E3 E4)(bloqueado E4 E3)
+          (bloqueado E1 Hospital)(bloqueado Hospital E1)
           
           (carretera E1 E2)(carretera E2 E1)
           (carretera E2 E3)(carretera E3 E2)

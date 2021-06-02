@@ -49,9 +49,9 @@
   
   (:durative-action repostar
             :parameters (?m - mov ?l - loc)
-            :duration (= ?duration (/ (- (capacidad-gasolina) (gasolina ?b)) 1000) )
+            :duration (= ?duration (/ (- (capacidad-gasolina) (gasolina ?m)) 1000) )
             :condition (and (over all (en ?m ?l)) (at start (repostar ?m ?l)))
-            :effect (and (at end (assign (gasolina ?b) (capacidad-gasolina))))
+            :effect (and (at end (assign (gasolina ?m) (capacidad-gasolina))))
   )
 
   (:durative-action recargar ;; BIEN
@@ -66,7 +66,7 @@
             :duration (= ?duration 10)
             :condition (and (over all (en ?a ?e)) 
                        (over all (en ?v ?e))
-                       (at start (= (incendio ?e) 0)
+                       (at start (= (incendio ?e) 0))
                        (at start (atrapado ?v)))
             :effect (and (at end (not (atrapado ?v))) (at end (rescatado ?v)))
   )
@@ -76,7 +76,7 @@
             :duration (= ?duration 50)
             :condition (and (over all (en ?a ?e)) 
                        (over all (en ?v ?e))
-                       (at start (> (incendio ?e) 0)
+                       (at start (> (incendio ?e) 0))
                        (at start (atrapado ?v)))
             :effect (and (at end (not (atrapado ?v))) (at end (rescatado ?v)))
   )
