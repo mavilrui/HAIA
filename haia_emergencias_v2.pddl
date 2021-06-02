@@ -23,6 +23,7 @@
 
   (:functions (velocidad ?m - mov)
               (distancia ?l1 - loc ?l2 - loc)
+              (nivel-bloqueo ?l1 - loc ?l2 - loc)
               (coste-apagado)
               (consumo ?m - mov)
               (agua ?b - bom)
@@ -99,7 +100,7 @@
 
   (:durative-action desbloquear ;; BIEN
             :parameters (?p - pol ?e1 - loc ?e2 - loc)
-            :duration (= ?duration 100)
+            :duration (= ?duration (* (nivel-bloqueo ?e1 ?e2) 100))
             :condition (and 
                        (over all (en ?p ?e1))
                        (at start (bloqueado ?e1 ?e2)))
