@@ -38,8 +38,7 @@
            :condition (and (at start (en ?m ?l1)) 
                       (over all (carretera ?l1 ?l2))
                       (over all (libre ?l1 ?l2))
-                      (at start (> (gasolina ?m) (* (consumo ?m) (distancia ?l1 ?l2))))) ;; Se añade el consumo de gasolina
-                      ;(over all (not (bloqueado ?l1 ?l2))))                      
+                      (at start (> (gasolina ?m) (* (consumo ?m) (distancia ?l1 ?l2))))) ;; Se añade el consumo de gasolina                 
            :effect (and (at start (not (en ?m ?l1) )) (at end (en ?m ?l2)) (at end (decrease (gasolina ?m) (* (consumo ?m) (distancia ?l1 ?l2))))) ;; Se añade el consumo de gasolina
   )
   
