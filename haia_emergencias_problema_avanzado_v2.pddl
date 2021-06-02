@@ -41,6 +41,10 @@
           (= (gasolina P2) 2000)
           (= (gasolina P3) 2500)
 	  
+          (= (capacidadMax) 2)
+          (= (carga-amb A1) 0)
+          (= (carga-amb A2) 0)
+	  
 	  (repostar B1 EstacionBomberos)
 	  (repostar B2 EstacionBomberos)
 	  (repostar A1 Hospital)
@@ -78,6 +82,21 @@
           (= (nivel-bloqueo E9 E11) 1)(= (nivel-bloqueo E11 E9) 1)
           (= (nivel-bloqueo E10 Hospital) 2)(= (nivel-bloqueo Hospital E10) 2)
           
+          (= (incendio E1) 1)
+          (= (incendio E2) 2)
+          (= (incendio E3) 0)
+          (= (incendio E4) 0)
+          (= (incendio E5) 3)
+          (= (incendio E6) 0)
+          (= (incendio E7) 0)
+          (= (incendio E8) 0)
+          (= (incendio E9) 1)
+          (= (incendio E10) 1)
+          (= (incendio E11) 0)
+          (= (incendio Hospital) 0)
+          (= (incendio EstacionBomberos) 0)
+          (= (incendio Comisaria) 0)
+          
           ;; PREDICADOS ;;
           (en B1 EstacionBomberos)
           (en B2 EstacionBomberos)
@@ -97,12 +116,6 @@
           (en V8 E10)(atrapado V8)
           (en V9 E11)(atrapado V9)
           (en V10 E11)(atrapado V10)
-          
-          (incendio E1)
-          (incendio E2)
-          (incendio E5)
-          (incendio E9)
-          (incendio E10)
           
           (bloqueado E1 E4)(bloqueado E4 E1)
           (bloqueado E2 E3)(bloqueado E3 E2)
