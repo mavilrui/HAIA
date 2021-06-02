@@ -24,18 +24,26 @@
           (= (coste-apagado) 25)
           (= (agua B1) 50)
           (= (agua B2) 0)
-          
-          ;(= (distancia E1 E2) 25)(= (distancia E2 E1) 25)
-          ;(= (distancia E2 E3) 45)(= (distancia E3 E2) 45)
-          ;(= (distancia E3 E4) 25)(= (distancia E4 E3) 25)
-          ;(= (distancia E4 E5) 35)(= (distancia E5 E4) 35)
-          ;(= (distancia E5 E6) 25)(= (distancia E6 E5) 25)
-          ;(= (distancia E6 E1) 15)(= (distancia E1 E6) 15)
-          
-          ;(= (distancia Hospital E1) 30)(= (distancia E1 Hospital) 30)
-          ;(= (distancia Hospital E4) 30)(= (distancia E4 Hospital) 30)
-          
-          ;(= (distancia EstacionBomberos E4) 20)(= (distancia E4 EstacionBomberos) 20)
+	  
+          (= (distancia E1 E2) 25)(= (distancia E2 E1) 25)
+          (= (distancia E2 E3) 25)(= (distancia E3 E2) 25)
+          (= (distancia E1 E4) 25)(= (distancia E4 E1) 25)
+          (= (distancia E2 E5) 25)(= (distancia E5 E2) 25)
+          (= (distancia E3 E6) 25)(= (distancia E6 E3) 25)
+          (= (distancia Comisaria E4) 25)(= (distancia E4 Comisaria) 25)
+          (= (distancia E4 E5) 25)(= (distancia E5 E4) 25)
+          (= (distancia E5 E6) 25)(= (distancia E6 E5) 25)
+          (= (distancia E6 EstacionBomberos) 25)(= (distancia EstacionBomberos E6) 25)
+          (= (distancia E4 E7) 25)(= (distancia E7 E4) 25)
+          (= (distancia E5 E8) 25)(= (distancia E8 E5) 25)
+          (= (distancia E6 E9) 25)(= (distancia E9 E6) 25)
+          (= (distancia E7 E8) 25)(= (distancia E8 E7) 25)
+          (= (distancia E8 E9) 25)(= (distancia E9 E8) 25)
+          (= (distancia E7 E10) 25)(= (distancia E10 E7) 25)
+          (= (distancia E8 Hospital) 25)(= (distancia Hospital E8) 25)
+          (= (distancia E9 E11) 25)(= (distancia E11 E9) 25)
+          (= (distancia E10 Hospital) 25)(= (distancia Hospital E10) 25)
+          (= (distancia Hospital E11) 25)(= (distancia E11 Hospital) 25)
           
           ;; PREDICADOS ;;
           (en B1 EstacionBomberos)
