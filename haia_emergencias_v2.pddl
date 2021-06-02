@@ -3,7 +3,7 @@
   (:requirements :strips :typing :durative-actions :fluents)
 
   (:types loc
-          edi hos est - loc
+          edi hos est com - loc
           mov
           pol bom amb - mov
           vic
@@ -12,6 +12,7 @@
   (:predicates (en ?e - (either pol bom amb vic) ?l - loc)
                (atrapado ?v - vic) 
                (rescatado ?v - vic)
+               (repostar ?m - mov ?l - loc)
                (cargado ?v - vic ?a - amb)
                (incendio ?l - loc)(apagado ?l - loc) ;; El predicado apagado no sería necesario una vez se impide rescatar
                ; a personas de edificios en llamas. Se usa únicamente para comprobar que el fuego si que se apaga.
@@ -23,8 +24,11 @@
   (:functions (velocidad ?m - mov)
               (distancia ?l1 - loc ?l2 - loc)
               (coste-apagado)
+              (consumo ?m - mov)
               (agua ?b - bom)
+              (gasolina ?m - mov)
               (capacidad-agua)
+              (capacidad-gasolina)
    )
   
   (:durative-action mover ;; BIEN
@@ -32,9 +36,10 @@
            :duration (= ?duration (/ (distancia ?l1 ?l2) (velocidad ?m)) )
            :condition (and (at start (en ?m ?l1)) 
                       (over all (carretera ?l1 ?l2))
-                      (over all (libre ?l1 ?l2))) 
+                      (over all (libre ?l1 ?l2))
+                      (at start (> (gasolina ?m) (* (consumo ?m) (distancia ?l1 ?l2))))) 
                       ;(over all (not (bloqueado ?l1 ?l2))))                      
-           :effect (and (at start (not (en ?m ?l1) )) (at end (en ?m ?l2)))
+           :effect (and (at start (not (en ?m ?l1) )) (at end (en ?m ?l2)) (at end (decrease (gasolina ?m) (* (consumo ?m) (distancia ?l1 ?l2)))))
   )
 
   (:durative-action recargar
