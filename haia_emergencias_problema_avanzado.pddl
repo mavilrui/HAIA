@@ -117,17 +117,33 @@
 
 	( and
         ;; AMBULANCIA
-        (en V1 Hospital)    
-        (en V2 Hospital)  
+        (en V1 Hospital)
+        (en V2 Hospital)
+        (en V3 Hospital)
+        (en V4 Hospital)
+        (en V5 Hospital)
+        (en V6 Hospital)
+        (en V7 Hospital)
+        (en V8 Hospital)
+        (en V9 Hospital)
+        (en V10 Hospital)
 
         ;; POLICIA
-        (libre E3 E4)(libre E4 E3)
-        (libre Hospital E1)(libre E1 Hospital)
+        (libre E1 E4)(libre E4 E1)
+        (libre E2 E3)(libre E3 E2)
+        (libre E4 E5)(libre E5 E4)
+        (libre E5 E6)(libre E6 E5)
+        (libre E5 E8)(libre E8 E5)
+        (libre E7 E8)(libre E8 E7)
+        (libre E9 E11)(libre E11 E9)
+        (libre E10 Hospital)(libre Hospital E10)
 
         ;; BOMBEROS
         (apagado E1)
         (apagado E2)
-        (apagado E6)
+        (apagado E5)
+        (apagado E9)
+        (apagado E10)
 	)
 )
 
