@@ -26,6 +26,14 @@
           (= (agua B1) 50)
           (= (agua B2) 0)
 	  
+	  (repostar B1 EstacionBomberos)
+	  (repostar B2 EstacionBomberos)
+	  (repostar A1 Hospital)
+	  (repostar A2 Hospital)
+	  (repostar P1 Comisaria)
+	  (repostar P2 Comisaria)
+	  (repostar P3 Comisaria)
+	  
           (= (distancia E1 E2) 25)(= (distancia E2 E1) 25)
           (= (distancia E2 E3) 35)(= (distancia E3 E2) 35)
           (= (distancia E1 E4) 25)(= (distancia E4 E1) 25)
