@@ -10,12 +10,14 @@
   )
 
   (:predicates (en ?e - (either pol bom amb vic) ?l - loc)
-               (atrapado ?v - vic ?e - edi)
+               (atrapado ?v - vic) 
+               (rescatado ?v - vic)
                (cargado ?v - vic ?a - amb)
-               (incendio ?l - loc)
-               (ocupada ?a - amb)
-               (bloqueado ?l1 - loc ?l2 - loc)
-               (carretera ?l1 - loc ?l2 - loc)
+               (incendio ?l - loc)(apagado ?l - loc) ;; El predicado apagado no sería necesario una vez se impide rescatar
+               ; a personas de edificios en llamas. Se usa únicamente para comprobar que el fuego si que se apaga.
+               (disponible ?a - amb)
+               (bloqueado ?l1 - loc ?l2 - loc) (libre ?l1 - loc ?l2 - loc)
+               (carretera ?l1 - loc ?l2 - loc) ;; Estatico
   )
 
   (:functions (velocidad ?m - mov)
@@ -25,12 +27,13 @@
               (capacidad-agua)
    )
   
-  (:durative-action mover
+  (:durative-action mover ;; BIEN
            :parameters (?m - mov ?l1 - loc ?l2 - loc)
            :duration (= ?duration (/ (distancia ?l1 ?l2) (velocidad ?m)) )
            :condition (and (at start (en ?m ?l1)) 
-                      (over all (carretera ?l1 ?l2)) 
-                      (over all (not (bloqueado ?l1 ?l2))))
+                      (over all (carretera ?l1 ?l2))
+                      (over all (libre ?l1 ?l2))) 
+                      ;(over all (not (bloqueado ?l1 ?l2))))                      
            :effect (and (at start (not (en ?m ?l1) )) (at end (en ?m ?l2)))
   )
 
@@ -41,48 +44,58 @@
             :effect (and (at end (assign (agua ?b) (capacidad-agua))))
   )
   
-  (:durative-action rescatar
+  (:durative-action rescatar ;; BIEN
             :parameters (?a - amb ?v - vic ?e - edi)
             :duration (= ?duration 10)
             :condition (and (over all (en ?a ?e)) 
-                       (over all (en ?v ?e)) 
-                       (at start (atrapado ?v ?e)))
-            :effect (at end (not (atrapado ?v ?e)))
+                       (over all (en ?v ?e))
+                       (at start (atrapado ?v)))
+            :effect (and (at end (not (atrapado ?v))) (at end (rescatado ?v)))
   )
   
-  (:durative-action cargar
+  (:durative-action cargar ;; BIEN
             :parameters (?a - amb ?v - vic ?e - edi)
             :duration (= ?duration 10)
             :condition (and (over all (en ?a ?e)) 
-                       (at start (not (ocupada ?a)))
-                       (at start (en ?v ?e)))
-            :effect (and (at end (not (en ?v ?e))) (at end (cargado ?v ?a)) (at end (ocupada ?a)))
+                       (at start (disponible ?a))                       
+                       (at start (en ?v ?e))
+                       (at start (rescatado ?v))) ;; podria ser (over all)
+            :effect (and 
+                      (at end (not (en ?v ?e))) 
+                      (at end (cargado ?v ?a)) 
+                      (at end (not (disponible ?a))))
   )
   
-  (:durative-action descargar
+  (:durative-action descargar ;; BIEN
             :parameters (?a - amb ?v - vic ?h - hos)
             :duration (= ?duration 10)
-            :condition (and (over all (en ?a ?h)) 
-                       (at start (ocupada ?a)) 
+            :condition (and (over all (en ?a ?h))
                        (at start (cargado ?v ?a)))
-            :effect (and (at end (en ?v ?h)) (at end (not (cargado ?v ?a))) (at end (not (ocupada ?a))))
-  )
-  
-  (:durative-action desbloquear
-            :parameters (?p - pol ?e1 - edi ?e2 - edi)
+            :effect (and (at end (en ?v ?h)) (at end (not (cargado ?v ?a))) (at end (disponible ?a)))
+  )  
+
+  (:durative-action desbloquear ;; BIEN
+            :parameters (?p - pol ?e1 - loc ?e2 - loc)
             :duration (= ?duration 10)
-            :condition (and (over all (or (en ?p ?e1) (en ?p ?e2)))
-                       (at start (bloqueado ?e2 ?e1))
+            :condition (and 
+                       (over all (en ?p ?e1))
                        (at start (bloqueado ?e1 ?e2)))
-            :effect (and (at end (not (bloqueado ?e1 ?e2))) (at end (not (bloqueado ?e2 ?e1))))
+            :effect (and 
+                       (at end (not (bloqueado ?e1 ?e2))) 
+                       (at end (not (bloqueado ?e2 ?e1)))
+                       (at end (libre ?e1 ?e2))
+                       (at end (libre ?e2 ?e1)))
   )
   
-  (:durative-action extinguir
-            :parameters (?b - bom ?e - edi)
+  (:durative-action extinguir ;; BIEN
+            :parameters (?b - bom ?e - loc)
             :duration (= ?duration 10)
             :condition (and (over all (en ?b ?e))
                        (at start (incendio ?e))
                        (at start (> (agua ?b) (coste-apagado))))
-            :effect (and (at end (not (incendio ?e))) (at end (decrease (agua ?b) (coste-apagado))))
+            :effect (and 
+                      (at end (not (incendio ?e)))
+                      (at end (apagado ?e)) 
+                      (at end (decrease (agua ?b) (coste-apagado))))
   )
 )
