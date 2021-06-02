@@ -18,7 +18,9 @@
                ; a personas de edificios en llamas. Se usa únicamente para comprobar que el fuego si que se apaga.
                (disponible ?a - amb)
                (bloqueado ?l1 - loc ?l2 - loc) (libre ?l1 - loc ?l2 - loc)
-               (carretera ?l1 - loc ?l2 - loc) ;; Estatico
+               (carretera ?l1 - loc ?l2 - loc) 
+               (boca-incendios ?l1 - loc)
+               (sin-boca-incendios ?l1 - loc)
   )
 
   (:functions (velocidad ?m - mov)
@@ -30,6 +32,9 @@
               (gasolina ?m - mov)
               (capacidad-agua)
               (capacidad-gasolina)
+              (incendio ?l - loc)
+              (carga-amb ?a - amb)
+              (capacidadMax)
    )
   
   (:durative-action mover ;; BIEN
@@ -61,7 +66,7 @@
             :duration (= ?duration 10)
             :condition (and (over all (en ?a ?e)) 
                        (over all (en ?v ?e))
-                       (at start (not (incendio ?e))
+                       (at start (= (incendio ?e) 0)
                        (at start (atrapado ?v)))
             :effect (and (at end (not (atrapado ?v))) (at end (rescatado ?v)))
   )
@@ -71,31 +76,38 @@
             :duration (= ?duration 50)
             :condition (and (over all (en ?a ?e)) 
                        (over all (en ?v ?e))
-                       (at start (incendio ?e))
+                       (at start (> (incendio ?e) 0)
                        (at start (atrapado ?v)))
             :effect (and (at end (not (atrapado ?v))) (at end (rescatado ?v)))
   )
   
   (:durative-action cargar ;; BIEN
             :parameters (?a - amb ?v - vic ?e - edi)
-            :duration (= ?duration 25)
-            :condition (and (over all (en ?a ?e)) 
-                       (at start (disponible ?a))                       
+            :duration (= ?duration 10)
+            :condition (and (over all (en ?a ?e))                       
                        (at start (en ?v ?e))
-                       (at start (rescatado ?v))) ;; podria ser (over all)
+                       (at start (rescatado ?v)) ;; podria ser (over all)
+                       (at start (> (capacidadMax) (carga-amb ?a))) ; '>' porque lpg a veces tiene problemas con el '<'
+                      )
             :effect (and 
                       (at end (not (en ?v ?e))) 
                       (at end (cargado ?v ?a)) 
-                      (at end (not (disponible ?a))))
+                      ;(at end (not (disponible ?a)))
+                      (at end (increase (carga-amb ?a) 1))
+                    )
   )
   
   (:durative-action descargar ;; BIEN
             :parameters (?a - amb ?v - vic ?h - hos)
-            :duration (= ?duration 15)
+            :duration (= ?duration 10)
             :condition (and (over all (en ?a ?h))
                        (at start (cargado ?v ?a)))
-            :effect (and (at end (en ?v ?h)) (at end (not (cargado ?v ?a))) (at end (disponible ?a)))
-  )  
+            :effect (and 
+                      (at end (en ?v ?h)) 
+                      (at end (not (cargado ?v ?a))) 
+                      (at end (decrease (carga-amb ?a) 1))
+                    )
+  )
 
   (:durative-action desbloquear ;; BIEN
             :parameters (?p - pol ?e1 - loc ?e2 - loc)
@@ -109,16 +121,30 @@
                        (at end (libre ?e1 ?e2))
                        (at end (libre ?e2 ?e1)))
   )
-  
-  (:durative-action extinguir ;; BIEN
+
+  (:durative-action extinguir-boca ;; BIEN
             :parameters (?b - bom ?e - loc)
-            :duration (= ?duration 25)
+            :duration (= ?duration 10)
             :condition (and (over all (en ?b ?e))
-                       (at start (incendio ?e))
+                       (at start (> (incendio ?e) 0))
+                       (at start (boca-incendios ?e))
+                       )
+            :effect (and 
+                      (at end (decrease (incendio ?e) 1))
+                    )
+            
+  )
+
+  (:durative-action extinguir-deposito ;; BIEN
+            :parameters (?b - bom ?e - loc)
+            :duration (= ?duration 10)
+            :condition (and (over all (en ?b ?e))
+                       (at start (> (incendio ?e) 0))
+                       (at start (sin-boca-incendios ?e))
                        (at start (> (agua ?b) (coste-apagado))))
             :effect (and 
-                      (at end (not (incendio ?e)))
-                      (at end (apagado ?e)) 
-                      (at end (decrease (agua ?b) (coste-apagado))))
+                      (at end (decrease (incendio ?e) 1))
+                      (at end (decrease (agua ?b) (coste-apagado)))
+                    )
   )
 )
