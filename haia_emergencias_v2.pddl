@@ -44,12 +44,12 @@
   
   (:durative-action repostar
             :parameters (?m - mov ?l - loc)
-            :duration (= ?duration (/ (- (capacidad-gasolina) (gasolina ?b)) 10) )
+            :duration (= ?duration (/ (- (capacidad-gasolina) (gasolina ?b)) 1000) )
             :condition (and (over all (en ?m ?l)) (at start (repostar ?m ?l)))
             :effect (and (at end (assign (gasolina ?b) (capacidad-gasolina))))
   )
 
-  (:durative-action recargar
+  (:durative-action recargar ;; BIEN
             :parameters (?b - bom ?e - est)
             :duration (= ?duration (/ (- (capacidad-agua) (agua ?b)) 10) )
             :condition (over all (en ?b ?e))
@@ -61,13 +61,24 @@
             :duration (= ?duration 10)
             :condition (and (over all (en ?a ?e)) 
                        (over all (en ?v ?e))
+                       (at start (not (incendio ?e))
+                       (at start (atrapado ?v)))
+            :effect (and (at end (not (atrapado ?v))) (at end (rescatado ?v)))
+  )
+  
+  (:durative-action rescatar-incendio ;; BIEN
+            :parameters (?a - amb ?v - vic ?e - edi)
+            :duration (= ?duration 50)
+            :condition (and (over all (en ?a ?e)) 
+                       (over all (en ?v ?e))
+                       (at start (incendio ?e))
                        (at start (atrapado ?v)))
             :effect (and (at end (not (atrapado ?v))) (at end (rescatado ?v)))
   )
   
   (:durative-action cargar ;; BIEN
             :parameters (?a - amb ?v - vic ?e - edi)
-            :duration (= ?duration 10)
+            :duration (= ?duration 25)
             :condition (and (over all (en ?a ?e)) 
                        (at start (disponible ?a))                       
                        (at start (en ?v ?e))
@@ -80,7 +91,7 @@
   
   (:durative-action descargar ;; BIEN
             :parameters (?a - amb ?v - vic ?h - hos)
-            :duration (= ?duration 10)
+            :duration (= ?duration 15)
             :condition (and (over all (en ?a ?h))
                        (at start (cargado ?v ?a)))
             :effect (and (at end (en ?v ?h)) (at end (not (cargado ?v ?a))) (at end (disponible ?a)))
@@ -88,7 +99,7 @@
 
   (:durative-action desbloquear ;; BIEN
             :parameters (?p - pol ?e1 - loc ?e2 - loc)
-            :duration (= ?duration 10)
+            :duration (= ?duration 100)
             :condition (and 
                        (over all (en ?p ?e1))
                        (at start (bloqueado ?e1 ?e2)))
@@ -101,7 +112,7 @@
   
   (:durative-action extinguir ;; BIEN
             :parameters (?b - bom ?e - loc)
-            :duration (= ?duration 10)
+            :duration (= ?duration 25)
             :condition (and (over all (en ?b ?e))
                        (at start (incendio ?e))
                        (at start (> (agua ?b) (coste-apagado))))
