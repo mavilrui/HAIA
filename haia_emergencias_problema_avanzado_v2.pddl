@@ -88,6 +88,37 @@
           (= (incendio Hospital) 0)
           (= (incendio EstacionBomberos) 0)
           (= (incendio Comisaria) 0)
+
+          (boca-incendios E1)
+          (boca-incendios E2)
+          (boca-incendios E3)
+          (boca-incendios E4)
+        ;   (boca-incendios E5)
+        ;   (boca-incendios E6)
+        ;   (boca-incendios E7)
+        ;   (boca-incendios E8)
+        ;   (boca-incendios E9)
+        ;   (boca-incendios E10)
+        ;   (boca-incendios E11)
+        ;   (boca-incendios Hospital)
+        ;   (boca-incendios EstacionBomberos)
+        ;   (boca-incendios Comisaria)
+
+        ;   (sin-boca-incendios E1)
+        ;   (sin-boca-incendios E2)
+        ;   (sin-boca-incendios E3)
+        ;   (sin-boca-incendios E4)
+          (sin-boca-incendios E5)
+          (sin-boca-incendios E6)
+          (sin-boca-incendios E7)
+          (sin-boca-incendios E8)
+          (sin-boca-incendios E9)
+          (sin-boca-incendios E10)
+          (sin-boca-incendios E11)
+          (sin-boca-incendios Comisaria)
+          (sin-boca-incendios Hospital)
+          (sin-boca-incendios EstacionBomberos)
+
           
           ;; PREDICADOS ;;
           (en B1 EstacionBomberos)
@@ -95,16 +126,16 @@
           (en P1 Comisaria)
           (en P2 Comisaria)
           (en P3 Comisaria)
-          (en A1 Hospital)(disponible A1)
-          (en A2 Hospital)(disponible A2)
+          (en A1 Hospital)
+          (en A2 Hospital)
 	  
-	  (repostar B1 EstacionBomberos)
-	  (repostar B2 EstacionBomberos)
-	  (repostar A1 Hospital)
-	  (repostar A2 Hospital)
-	  (repostar P1 Comisaria)
-	  (repostar P2 Comisaria)
-	  (repostar P3 Comisaria)
+          (repostar B1 EstacionBomberos)
+          (repostar B2 EstacionBomberos)
+          (repostar A1 Hospital)
+          (repostar A2 Hospital)
+          (repostar P1 Comisaria)
+          (repostar P2 Comisaria)
+          (repostar P3 Comisaria)
 
           (en V1 E1)(atrapado V1)
           (en V2 E2)(atrapado V2)
@@ -125,7 +156,7 @@
           (bloqueado E7 E8)(bloqueado E8 E7)
           (bloqueado E9 E11)(bloqueado E11 E9)
           (bloqueado E10 Hospital)(bloqueado Hospital E10)
-
+          
           (libre E1 E2)(libre E2 E1)
           (libre E2 E5)(libre E5 E2)
           (libre E3 E6)(libre E6 E3)
@@ -174,7 +205,7 @@
         (en V9 Hospital)
         (en V10 Hospital)
 
-        ;; POLICIA
+        ; ; ;; POLICIA
         (libre E1 E4)(libre E4 E1)
         (libre E2 E3)(libre E3 E2)
         (libre E4 E5)(libre E5 E4)
@@ -184,12 +215,13 @@
         (libre E9 E11)(libre E11 E9)
         (libre E10 Hospital)(libre Hospital E10)
 
-        ;; BOMBEROS
-        (= (incendio E1) 0)
-        (= (incendio E2) 0)
-        (= (incendio E5) 0)
-        (= (incendio E9) 0)
-        (= (incendio E10) 0)
+        ; ;; BOMBEROS
+        (> 1 (incendio E5))
+        (> 1 (incendio E2))
+        (> 1 (incendio E5))
+        (> 1 (incendio E9))
+        (> 1 (incendio E10))
+        
 	)
 )
 
