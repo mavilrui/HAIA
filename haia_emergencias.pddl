@@ -25,6 +25,10 @@
               (coste-apagado)
               (agua ?b - bom)
               (capacidad-agua)
+              (victim-time)
+              (remove-debris-time)
+              (fire-extinguish-time)
+              (total-duration)
    )
   
   (:durative-action mover ;; BIEN
@@ -34,14 +38,16 @@
                       (over all (carretera ?l1 ?l2))
                       (over all (libre ?l1 ?l2))) 
                       ;(over all (not (bloqueado ?l1 ?l2))))                      
-           :effect (and (at start (not (en ?m ?l1) )) (at end (en ?m ?l2)))
+           :effect (and (at start (not (en ?m ?l1) )) (at end (en ?m ?l2))
+                        (at end (increase (total-duration) ?duration)))
   )
 
   (:durative-action recargar
             :parameters (?b - bom ?e - est)
             :duration (= ?duration (/ (- (capacidad-agua) (agua ?b)) 10) )
             :condition (over all (en ?b ?e))
-            :effect (and (at end (assign (agua ?b) (capacidad-agua))))
+            :effect (and (at end (assign (agua ?b) (capacidad-agua)))
+                      (at end (increase (total-duration) ?duration)))
   )
   
   (:durative-action rescatar ;; BIEN
@@ -50,7 +56,8 @@
             :condition (and (over all (en ?a ?e)) 
                        (over all (en ?v ?e))
                        (at start (atrapado ?v)))
-            :effect (and (at end (not (atrapado ?v))) (at end (rescatado ?v)))
+            :effect (and (at end (not (atrapado ?v))) (at end (rescatado ?v))
+                        (at end (increase (total-duration) ?duration)))
   )
   
   (:durative-action cargar ;; BIEN
@@ -63,7 +70,8 @@
             :effect (and 
                       (at end (not (en ?v ?e))) 
                       (at end (cargado ?v ?a)) 
-                      (at end (not (disponible ?a))))
+                      (at end (not (disponible ?a)))
+                        (at end (increase (total-duration) ?duration)))
   )
   
   (:durative-action descargar ;; BIEN
@@ -71,7 +79,9 @@
             :duration (= ?duration 10)
             :condition (and (over all (en ?a ?h))
                        (at start (cargado ?v ?a)))
-            :effect (and (at end (en ?v ?h)) (at end (not (cargado ?v ?a))) (at end (disponible ?a)))
+            :effect (and (at end (en ?v ?h)) (at end (not (cargado ?v ?a))) (at end (disponible ?a))
+                      (at end (assign (victim-time) (total-duration)))  
+			(at end (increase (total-duration) ?duration)))
   )  
 
   (:durative-action desbloquear ;; BIEN
@@ -84,7 +94,9 @@
                        (at end (not (bloqueado ?e1 ?e2))) 
                        (at end (not (bloqueado ?e2 ?e1)))
                        (at end (libre ?e1 ?e2))
-                       (at end (libre ?e2 ?e1)))
+                       (at end (libre ?e2 ?e1))
+                       (at end (assign (remove-debris-time) (total-duration)))
+                        (at end (increase (total-duration) ?duration)))
   )
   
   (:durative-action extinguir ;; BIEN
@@ -96,6 +108,8 @@
             :effect (and 
                       (at end (not (incendio ?e)))
                       (at end (apagado ?e)) 
-                      (at end (decrease (agua ?b) (coste-apagado))))
+                      (at end (decrease (agua ?b) (coste-apagado)))
+                        (at end (increase (total-duration) ?duration))
+                      (at end (assign (fire-extinguish-time) (total-duration))))
   )
 )

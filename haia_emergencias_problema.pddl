@@ -11,6 +11,11 @@
 )
 
 (:init
+          (= (victim-time) 0)
+          (= (remove-debris-time) 0)
+          (= (total-duration) 0)
+          (= (fire-extinguish-time) 0)
+
           ;; FUNCIONES ;;
           (= (velocidad A) 5)
           (= (velocidad P) 5)
@@ -31,6 +36,7 @@
           (= (distancia Hospital E4) 30)(= (distancia E4 Hospital) 30)
           
           (= (distancia EstacionBomberos E4) 20)(= (distancia E4 EstacionBomberos) 20)
+          (= (distancia EstacionBomberos E5) 15)(= (distancia E5 EstacionBomberos) 15)
           
           ;; PREDICADOS ;;
           (en B EstacionBomberos)
@@ -66,6 +72,7 @@
         ;   (libre Hospital E1)(libre E1 Hospital)
           (libre Hospital E4)(libre E4 Hospital)
           (libre EstacionBomberos E4)(libre E4 EstacionBomberos)
+          (libre EstacionBomberos E5)(libre E5 EstacionBomberos)
 
           
           (carretera E1 E2)(carretera E2 E1)
@@ -79,6 +86,7 @@
           (carretera Hospital E4)(carretera E4 Hospital)
           
           (carretera EstacionBomberos E4)(carretera E4 EstacionBomberos)
+          (carretera EstacionBomberos E5)(carretera E5 EstacionBomberos)
 )
 
 (:goal
@@ -99,6 +107,6 @@
 	)
 )
 
-(:metric minimize (total-time))
+(:metric minimize (+ (total-time) (* (fire-extinguish-time) 10)))
 
 )
